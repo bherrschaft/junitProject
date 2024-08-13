@@ -1,11 +1,10 @@
-package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookService {
-    private List<Book> bookDatabase = new ArrayList<>(); // A list to simulate a book database
+    public List<Book> bookDatabase = new ArrayList<>(); // A list to simulate a book database
 
     public List<Book> searchBook(String keyword) {
         // Search book by title, author, or genre
@@ -17,10 +16,14 @@ public class BookService {
     }
 
     public boolean purchaseBook(User user, Book book) {
-        // In real world, this should check user's balance, availability of the book, and then make a transaction
-        // But for now, we just check if the book exists in our "database"
-        return bookDatabase.contains(book);
+        if (bookDatabase.contains(book) && user.getBalance() >= book.getPrice()) {
+            user.getPurchasedBooks().add(book); // Add the book to the user's purchased list
+            user.setBalance(user.getBalance() - book.getPrice()); // Deduct the price from the user's balance
+            return true; // Purchase successful
+        }
+        return false; // Purchase failed
     }
+
 
     public boolean addBookReview(User user, Book book, String review) {
         // logic to add book review

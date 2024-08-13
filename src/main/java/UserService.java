@@ -1,11 +1,11 @@
-package org.example;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserService {
     // A simple map to simulate a database
-    private Map<String, User> userDatabase = new HashMap<>();
+    public Map<String, User> userDatabase = new HashMap<>();
 
     public boolean registerUser(User user) {
         if (userDatabase.containsKey(user.getUsername())) {
@@ -31,17 +31,17 @@ public class UserService {
     }
 
     public boolean updateUserProfile(User user, String newUsername, String newPassword, String newEmail) {
-        // logic to update user profile
-        if (userDatabase.containsKey(newUsername)) {
+        if (!user.getUsername().equals(newUsername) && userDatabase.containsKey(newUsername)) {
             return false; // New username is already taken
         }
 
+        userDatabase.remove(user.getUsername()); // Remove old entry
         user.setUsername(newUsername);
         user.setPassword(newPassword);
         user.setEmail(newEmail);
-
-        userDatabase.put(newUsername, user);
+        userDatabase.put(newUsername, user); // Add updated entry
         return true; // User profile updated successfully
     }
+
 
 }
